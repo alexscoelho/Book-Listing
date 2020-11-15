@@ -1,42 +1,20 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
+			apiUrl: `https://goodreads-server-express--dotdash.repl.co/search/`,
+			data: null
 		},
 		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
-			},
-			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
-			},
-			changeColor: (index, color) => {
-				//get the store
+			loadSomeData: async term => {
 				const store = getStore();
-
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
-
-				//reset the global store
-				setStore({ demo: demo });
+				const resp = await fetch(`${store.apiUrl}${term}`);
+				if (resp.status === 200) {
+					const searchResponse = await resp.json();
+					setStore({ data: searchResponse });
+				} else if (resp.status >= 400 && resp.status < 500) {
+					const e = await resp.json();
+					throw new Error(e.message || e.msg || e);
+				} else throw new Error("Request error");
 			}
 		}
 	};

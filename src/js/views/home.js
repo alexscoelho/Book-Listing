@@ -1,15 +1,30 @@
-import React from "react";
-import rigoImage from "../../img/rigo-baby.jpg";
-import "../../styles/home.scss";
+import React, { useContext, useState } from "react";
+import { Context } from "../store/appContext";
+import Alert from "react-bootstrap/Alert";
+import { SearchResult } from "../component/SearchResult/SearchResult.js";
 
-export const Home = () => (
-	<div className="text-center mt-5">
-		<h1>Hello Rigo!</h1>
-		<p>
-			<img src={rigoImage} />
-		</p>
-		<a href="#" className="btn btn-success">
-			If you see this green button, bootstrap is working
-		</a>
-	</div>
-);
+export const Home = () => {
+	const { store, actions } = useContext(Context);
+	const [term, setTerm] = useState();
+	const [formStatus, setFormStatus] = useState({ status: "idle", message: "" });
+
+	const handleClick = () => {
+		event.preventDefault();
+		actions.loadSomeData(term).catch(e => setFormStatus({ status: "danger", message: e.message }));
+	};
+	return (
+		<div>
+			{formStatus.status == "danger" && <Alert variant="danger">{formStatus.message}</Alert>}
+			{/* <!-- You may use this form for your search box --> */}
+			<form>
+				<input onChange={() => setTerm(event.target.value)} />
+				<button onClick={() => handleClick()}>Search</button>
+			</form>
+
+			{/* <!-- You may use this container for your listing --> */}
+			<div>
+				<SearchResult />
+			</div>
+		</div>
+	);
+};
