@@ -2,22 +2,22 @@ import React, { useContext, useState } from "react";
 import "./SearchResult.scss";
 import PropTypes from "prop-types";
 
-export const SearchResult = () => {
+export const SearchResult = ({ result }) => {
 	return (
 		<div className="list-result">
-			<img src="https://via.placeholder.com/150C/O https://placeholder.com/" />
-			<div>
-				<h6>Humans of New York</h6>
-				<p>by Brandom Stanton</p>
+			<img src={result.imageUrl} />
+			<div className="description">
+				<h6>{result.title}</h6>
+				<p>{`by ${result.authorName}`}</p>
 			</div>
 		</div>
 	);
 };
 
 SearchResult.propTypes = {
-	data: PropTypes.array
+	result: PropTypes.array
 };
 
 SearchResult.propTypes = {
-	data: []
+	result: []
 };

@@ -22,8 +22,11 @@ export const Home = () => {
 			</form>
 
 			{/* <!-- You may use this container for your listing --> */}
+
 			<div>
-				<SearchResult />
+				{store.data.map((result, index) => {
+					return <SearchResult key={index} result={result} />;
+				})}
 			</div>
 		</div>
 	);

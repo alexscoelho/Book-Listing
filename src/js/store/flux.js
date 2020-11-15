@@ -2,7 +2,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			apiUrl: `https://goodreads-server-express--dotdash.repl.co/search/`,
-			data: null
+			data: []
 		},
 		actions: {
 			loadSomeData: async term => {
@@ -10,7 +10,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const resp = await fetch(`${store.apiUrl}${term}`);
 				if (resp.status === 200) {
 					const searchResponse = await resp.json();
-					setStore({ data: searchResponse });
+					setStore({ data: searchResponse.list });
 				} else if (resp.status >= 400 && resp.status < 500) {
 					const e = await resp.json();
 					throw new Error(e.message || e.msg || e);
