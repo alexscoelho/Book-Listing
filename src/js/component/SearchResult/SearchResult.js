@@ -18,6 +18,6 @@ SearchResult.propTypes = {
 	result: PropTypes.array
 };
 
-SearchResult.propTypes = {
+SearchResult.defaultProps = {
 	result: []
 };
